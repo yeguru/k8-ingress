@@ -25,7 +25,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: nginx
+  name: app1
 spec:
   selector:     #labels are used as selectors
     app: app1
@@ -33,3 +33,28 @@ spec:
   - protocol: TCP
     port: 80  #service port
     targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:050451372978:certificate/9427b0f4-6f70-45b0-b6f9-90d6486e33e4
+    alb.ingress.kubernetes.io/group.name: yeguru
+spec:
+  ingressClassName: alb
+  rules:
+ - host: "app1.rajaws82s.shop"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app1
+            port:
+              number: 80
+
