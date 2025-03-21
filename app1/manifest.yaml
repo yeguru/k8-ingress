@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1
-# These are deployment resource labels.  
+  # labels of deployment resource
   labels:
     app: app1
 spec:
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-      app: app1
+        app: app1
     spec:
       containers:
       - name: app1
@@ -26,11 +26,11 @@ apiVersion: v1
 metadata:
   name: app1
 spec:
-  selector:     #labels are used as selectors
+  selector: # labels are used as selectors
     app: app1
   ports:
   - protocol: TCP
-    port: 80  #service port
+    port: 80 # service port
     targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
@@ -42,11 +42,11 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:050451372978:certificate/9427b0f4-6f70-45b0-b6f9-90d6486e33e4
-    alb.ingress.kubernetes.io/group.name: yeguru
+    alb.ingress.kubernetes.io/group.name: joindevops
 spec:
   ingressClassName: alb
   rules:
- - host: "app1.rajaws82s.shop"
+  - host: "app1.rajaws82s.shop"
     http:
       paths:
       - pathType: Prefix
@@ -56,4 +56,3 @@ spec:
             name: app1
             port:
               number: 80
-
